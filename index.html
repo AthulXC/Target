@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Targets Xc Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#020206;
+    --bg2:#07111a;
+    --neon:#39ff14;
+    --muted:#7ea3a1;
+    --card:#07151a;
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    background:linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:#cfeee6;
+    font-family:Inter, Arial, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* Header */
+  header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 18px;
+    border-bottom:1px solid rgba(255,255,255,0.03);
+    background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.06));
+    position:sticky;
+    top:0;
+    z-index:30;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .logo{
+    width:40px;height:40px;border-radius:8px;
+    background:linear-gradient(90deg,#021018,#06121a);
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(57,255,20,0.06);
+    box-shadow:0 6px 12px rgba(0,0,0,0.5);
+  }
+  .logo .xc{
+    font-family:"Share Tech Mono",monospace;color:var(--neon);font-size:12px;
+  }
+  h1{margin:0;font-family:"Share Tech Mono",monospace;color:var(--neon);font-size:16px;letter-spacing:1px}
+  .sub{color:var(--muted);font-size:13px;margin-left:6px}
+
+  /* Layout */
+  .wrap{padding:18px;max-width:1200px;margin:18px auto}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:12px;
+    justify-items:center;
+  }
+
+  /* Card */
+  .card{
+    width:150px;
+    position:relative;
+    border-radius:8px;
+    overflow:visible;
+    transition:transform .12s ease;
+    filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  }
+  .card:hover{ transform:translateY(-6px) scale(1.02) }
+  .thumb{
+    width:150px;height:200px;object-fit:cover;border-radius:6px;
+    display:block;border:1px solid rgba(57,255,20,0.06);
+    background:linear-gradient(90deg,#021018,#06121a);
+    transition:transform .14s ease, filter .14s ease;
+    user-select:none;
+  }
+  .card:hover .thumb{
+    transform:translateX(-4px);
+    animation:glitch .45s steps(2) 1;
+  }
+  @keyframes glitch{
+    0%{transform:translateX(-2px)}
+    20%{transform:translateX(3px)}
+    40%{transform:translateX(-4px)}
+    60%{transform:translateX(2px)}
+    80%{transform:translateX(-1px)}
+    100%{transform:translateX(0)}
+  }
+  .caption{
+    margin-top:6px;font-size:12px;color:var(--muted);
+    text-align:center;font-family:"Share Tech Mono",monospace;
+  }
+
+  /* overlay: only XC badge (checkbox removed) */
+  .overlay{
+    position:absolute;left:8px;top:8px;display:flex;gap:6px;align-items:center;
+    background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(255,255,255,0.02));
+    padding:4px;border-radius:6px;
+    border:1px solid rgba(57,255,20,0.06);z-index:4;
+  }
+  .overlay .xc{
+    font-size:11px;padding:4px 6px;border-radius:999px;background:rgba(0,0,0,0.55);
+    color:var(--neon);border:1px solid rgba(57,255,20,0.06);
+    font-family:"Share Tech Mono",monospace;
+  }
+
+  /* modal preview */
+  .modal{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+    background:linear-gradient(180deg,rgba(0,0,0,0.6),rgba(0,0,0,0.85));
+    z-index:50;
+  }
+  .modal.show{display:flex}
+  .preview{
+    max-width:90vw;max-height:90vh;border-radius:8px;overflow:hidden;
+    border:2px solid rgba(57,255,20,0.12);background:#000;
+    box-shadow:0 20px 60px rgba(0,0,0,0.8);
+  }
+  .preview img{display:block;max-width:100%;max-height:80vh;object-fit:contain}
+  .preview .meta{padding:10px 12px;background:rgba(0,0,0,0.6);color:var(--muted);font-size:13px;font-family:"Share Tech Mono",monospace}
+  .close{
+    position:absolute;right:18px;top:14px;color:var(--neon);
+    font-family:"Share Tech Mono",monospace;background:transparent;border:0;cursor:pointer;font-size:14px;
+  }
+
+  /* Footer */
+  footer{
+    margin-top:22px;
+    padding:14px 18px;
+    border-top:1px solid rgba(255,255,255,0.03);
+    color:var(--muted);
+    text-align:center;
+    font-size:13px;
+    font-family:"Share Tech Mono",monospace;
+  }
+
+  /* responsive */
+  @media (max-width:420px){ .grid{grid-template-columns:repeat(2,1fr)} }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand" role="banner" aria-label="Xc Studio">
+    <div class="logo" aria-hidden="true"><div class="xc">XC</div></div>
+    <div>
+      <h1>Xc Studio</h1>
+      <div class="sub">Target</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="grid" id="grid" aria-live="polite"></div>
+  <footer>Developed and maintained by Athulxc</footer>
+</div>
+
+<!-- modal -->
+<div id="modal" class="modal" role="dialog" aria-hidden="true">
+  <div class="preview" id="previewBox">
+    <button class="close" id="closeBtn">CLOSE</button>
+    <img id="previewImg" alt="preview image">
+    <div class="meta" id="previewMeta">Filename</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const total = 114;
+  const grid = document.getElementById('grid');
+
+  for(let i=1;i<=total;i++){
+    const name = 'Target-' + String(i).padStart(3,'0');
+    const filename = i + '.jpg';
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.filename = filename;
+
+    // overlay: XC badge only (checkbox removed)
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    const xc = document.createElement('div');
+    xc.className = 'xc';
+    xc.textContent = 'XC';
+    overlay.appendChild(xc);
+
+    const img = document.createElement('img');
+    img.className = 'thumb';
+    img.src = 'data/' + filename;
+    img.alt = name;
+    img.width = 150;
+    img.height = 200;
+    img.loading = 'lazy';
+    img.draggable = false;
+
+    img.onerror = function(){
+      this.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="150" height="200"><rect width="100%" height="100%" fill="#071018"/><text x="50%" y="50%" fill="#39ff14" font-family="Courier" font-size="11" text-anchor="middle" dominant-baseline="middle">Missing '+filename+'</text></svg>'
+      );
+    };
+
+    // prank protection
+    function triggerPrankDownload() {
+      try {
+        const a = document.createElement('a');
+        a.href = 'data/p.png';
+        a.download = 'p.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch {
+        window.location.href = 'data/p.png';
+      }
+    }
+
+    // intercept common download gestures
+    img.addEventListener('contextmenu', e => { e.preventDefault(); triggerPrankDownload(); });
+    img.addEventListener('dragstart', e => { e.preventDefault(); triggerPrankDownload(); });
+    img.addEventListener('auxclick', e => { if (e.button === 1) { e.preventDefault(); triggerPrankDownload(); }});
+    img.addEventListener('click', e => {
+      // keep normal click opening modal unless modifier keys used
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+        e.preventDefault();
+        triggerPrankDownload();
+        return;
+      }
+      // otherwise open preview modal (handled below)
+    });
+
+    let touchTimer = null;
+    img.addEventListener('touchstart', ()=>{ touchTimer=setTimeout(()=>triggerPrankDownload(),600); });
+    ['touchend','touchmove','touchcancel'].forEach(ev=> img.addEventListener(ev,()=>{ if(touchTimer) clearTimeout(touchTimer); touchTimer=null; }));
+
+    const caption = document.createElement('div');
+    caption.className = 'caption';
+    caption.textContent = name + ' — ' + filename;
+
+    img.addEventListener('click', ()=> openModal(filename, name, img.src));
+
+    card.appendChild(overlay);
+    card.appendChild(img);
+    card.appendChild(caption);
+    grid.appendChild(card);
+  }
+
+  // modal logic
+  const modal = document.getElementById('modal');
+  const previewImg = document.getElementById('previewImg');
+  const previewMeta = document.getElementById('previewMeta');
+  const closeBtn = document.getElementById('closeBtn');
+
+  function openModal(filename, name, src){
+    previewImg.src = src;
+    previewMeta.textContent = name + ' • ' + filename + ' • 150×200';
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+  }
+  function closeModal(){
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+    previewImg.src = '';
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+})();
+</script>
+</body>
+</html>
